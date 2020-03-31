@@ -31,28 +31,43 @@ with open(file_to_load) as election_data:
             candidate_options.append(candidate_name)
             #2. Begin tracking that candidate's voter count.
             candidate_votes[candidate_name] = 0
-        # Add a vote to that candidate's count
-        candidate_votes[candidate_name] += 1
-# 1. Iterate through the candidate list.
-for candidate in candidate_votes:
-    # 2. Retrieve vote count of a candidate.
-    votes = candidate_votes[candidate]
-    # 3. Calculate the percentage of votes.
-    vote_percentage = float(votes) / float(total_votes) * 100
-    # Print each candidate, their voter count, and percentage to the
-    # terminal.
-    print(f"{candidate}: {vote_percentage:.1f}% ({votes:,})\n")
+            # Add a vote to that candidate's count
+            candidate_votes[candidate_name] += 1
+            # 1. Iterate through the candidate list.
+with open(file_to_save, "w") as text_file:
+        election_results = (
+        f"\nElection Results\n"
+        f"-------------------------\n"
+        f"Total Votes: {total_votes:,}\n"
+        f"-------------------------\n")
+        print(election_results, end="")
+        candidate_results = (f"{candidate}: {vote_percentage:.1f}% ({votes:,})\n")
+        # Save the final vote count to the text file.
+        txt_file.write(election_results)   
+        for candidate in candidate_votes:
+            # 2. Retrieve vote count of a candidate.
+            votes = candidate_votes[candidate]
+            # 3. Calculate the percentage of votes.
+            vote_percentage = float(votes) / float(total_votes) * 100
+            candidate_results = (
+                f"{candidate}: {vote_percentage:.1f}% ({votes:,})\n")
 
-    # Determine winning vote count, winning percentage, and candidate.
-    if (votes > winning_count) and (vote_percentage > winning_percentage):
-        winning_count = votes
-        winning_candidate = candidate
-        winning_percentage = vote_percentage
-# Print the winning candidates' results to the terminal.
-        winning_candidate_summary = (
-    f"-------------------------\n"
-    f"Winner: {winning_candidate}\n"
-    f"Winning Vote Count: {winning_count:,}\n"
-    f"Winning Percentage: {winning_percentage:.1f}%\n"
-    f"-------------------------\n")
-    print(winning_candidate_summary)
+            print(candidate_results)
+            txt_file.write(candidate_results)
+        
+            # Determine winning vote count, winning percentage, and candidate.
+            if (votes > winning_count) and (vote_percentage > winning_percentage):
+                winning_count = votes
+                winning_candidate = candidate
+                winning_percentage = vote_percentage
+                # Print the winning candidates' results to the terminal.
+                winning_candidate_summary = (
+                f"-------------------------\n"
+                f"Winner: {winning_candidate}\n"
+                f"Winning Vote Count: {winning_count:,}\n"
+                f"Winning Percentage: {winning_percentage:.1f}%\n"
+                f"-------------------------\n")
+                print(winning_candidate_summary) 
+                candidate_votes[candidate_name] += 1
+                #Save the results to text file
+                txt_file.write(winning_candidate_results)
